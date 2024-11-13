@@ -29,12 +29,17 @@ class Boolikulho {
 
 
         if (booliValmis) {
-            booli = booli + ", " + boolinNimi;
-            System.out.printf("Boolimalja tulvii juomia %s!%n", booli);
-        } else {
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        } 
+        else {
             this.booli = boolinNimi;
             booliValmis = true; // Boolivastaava täyttää booliastian
             System.out.println("Booli valmis: " + booli);
+            notifyAll();
         }
     }
 
@@ -44,11 +49,17 @@ class Boolikulho {
          * kannattaa odottaa, että sinne ilmestyy jotain...
          */
 
-        if (!booliValmis) {
-            System.out.println(juoja + " sai käteensä tyhjän boolimaljan");
-        } else {
+        if (!booliValmis) { 
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        } 
+        else {
             booliValmis = false; // Opiskelija juo boolin
             System.out.println(juoja + " nautti boolin " + booli);
+            notifyAll();
         }
 
     }
