@@ -32,7 +32,7 @@ class Boolikulho {
             try {
                 wait();
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                System.err.println("error");
             }
         } 
         else {
@@ -53,7 +53,7 @@ class Boolikulho {
             try {
                 wait();
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                System.err.println("error");
             }
         } 
         else {

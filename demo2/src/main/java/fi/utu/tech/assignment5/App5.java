@@ -97,13 +97,25 @@ class BankTransfer implements Runnable {
 
     /**
      * Tilisiirron suorittava metodi. Lukitsee lähde- ja kohdetilin säikeelle eksklusiivisesti.
+     * Koodissa ongelmana on, että päädytään deadlockiin.
+     * Kaksi eri säiettä yrittää lukita kaksi samaa tiliä eri järjestyksessä.
+     * Tämä voidaan ratkaista esimerkiksi lukitsemalla tilit aina samassa järjestyksessä.
      */
     @Override
     public void run() {
+        Account firstLock, secondLock;
+
+        if (from.compareTo(to) < 0) {
+            firstLock = from;
+            secondLock = to;
+        } else {
+            firstLock = to;
+            secondLock = from;
+        }
         // Lukitan 1. tili
-        synchronized (from) {
+        synchronized (firstLock) {
             // Lukko ensimmäiseen tiliin saatu, aloitetaan toisen tilin lukitus
-            synchronized (to) {
+            synchronized (secondLock) {
                 // Säie sai yksinoikeudet molempiin tileihin, tarkistetaan tilien kate ja suoritetaan siirto,
                 // jos lakiehdot täyttyvät
                 if ((from.getBalance() - amount) > 0 && (to.getBalance() + amount) <= 1000) {
