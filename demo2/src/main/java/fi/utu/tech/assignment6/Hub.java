@@ -9,6 +9,10 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
+/*
+ * Kaikki jotka muokkaavat lampun tilaa pitää muuttaa synkronoiduksi.
+ */
+
 public class Hub implements Runnable {
 
     private Map<Integer, Light> lights = new HashMap<>();
@@ -21,13 +25,13 @@ public class Hub implements Runnable {
      * 
      * @return The id of the newly-created light
      */
-    public int addLight() {
+    public synchronized int addLight() {
         int id = rnd.nextInt(1000);
         lights.put(id, new Light(id));
         return id;
     }
 
-    public void toggleLight(int id) {
+    public synchronized void toggleLight(int id) {
         Light l = lights.get(id);
         l.toggle();
     }
@@ -37,7 +41,7 @@ public class Hub implements Runnable {
      * 
      * @param id The id of light to be turned on
      */
-    public void turnOnLight(int id) {
+    public synchronized void turnOnLight(int id) {
         Light l = lights.get(id);
         l.turnOn();
     }
@@ -47,7 +51,7 @@ public class Hub implements Runnable {
      * 
      * @param id The id of light to be turned off
      */
-    public void turnOffLight(int id) {
+    public synchronized void turnOffLight(int id) {
         Light l = lights.get(id);
         l.turnOff();
     }
@@ -57,7 +61,7 @@ public class Hub implements Runnable {
      * 
      * @return The set of ids
      */
-    public Set<Integer> getLightIds() {
+    public synchronized Set<Integer> getLightIds() {
         return lights.keySet();
     }
 
@@ -66,14 +70,14 @@ public class Hub implements Runnable {
      * 
      * @return The collection of currently available lights
      */
-    public Collection<Light> getLights() {
+    public synchronized Collection<Light> getLights() {
         return lights.values();
     }
 
     /**
      * Turn off all the lights
      */
-    public void turnOffAllLights() {
+    public synchronized void turnOffAllLights() {
         for (var l : lights.values()) {
             l.turnOff();
         }
@@ -82,7 +86,7 @@ public class Hub implements Runnable {
     /**
      * Turn on all the lights
      */
-    public void turnOnAllLights() {
+    public synchronized void turnOnAllLights() {
         for (var l : lights.values()) {
             l.turnOn();
         }
