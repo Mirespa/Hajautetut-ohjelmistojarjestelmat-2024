@@ -2,6 +2,8 @@ package fi.utu.tech.assignment3;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 import fi.utu.tech.assignment3.SubmissionGenerator.Strategy;
 
@@ -11,7 +13,8 @@ public class App3 {
     public static void main(String[] args) {
         // Luodaan yhteinen lista, johon automaattitarkastajat lisäilevät tarkistettuja tehtäviä
         // ja josta studyRegistrar niitä lukee
-        List<Submission> gradedSubmissions = new ArrayList<Submission>(30);
+        // BlockingQueue voi blokata säikeitä jos jono tulee täydeksi
+        BlockingQueue<Submission> gradedSubmissions = new LinkedBlockingQueue<>(30);
         
         // Luodaan 50 automaattitarkistajaa, jolle jokaiselle annetaan 20 tehtävää tarkistettavaksi
         // Jokainen automaattitarkastaja saa viittauksen samaan gradedSubmissions-listaan, johon tarkistetut palautukset lisätään
